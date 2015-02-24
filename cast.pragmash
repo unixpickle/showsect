@@ -1,0 +1,15 @@
+# This finds the cast for a given show ID
+
+if not 1 (count $ARGV) {
+	throw invalid argument count
+}
+
+set url (join http://www.imdb.com/title/ $ARGV /fullcredits?ref_=tt_cl_sm)
+set contents (read $url)
+set pattern "<span class=\"itemprop\" itemprop=\"name\">(.*?)<\\/span>"
+set matches (match $pattern $contents)
+set res ""
+for x (range 1 (count $matches) 2) {
+	set res (arr $res ([] $matches $x))
+}
+echo $res

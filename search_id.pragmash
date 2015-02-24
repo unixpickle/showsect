@@ -1,0 +1,15 @@
+# This subroutine searches a query on IMDb and returns the first show ID.
+
+if not 1 (count $ARGV) {
+	throw invalid argument count
+}
+
+set queryStr (rep $ARGV " " +)
+set url (join http://www.imdb.com/find?ref_=nv_sr_fn&q= $queryStr &s=all)
+set contents (read $url)
+set pattern "<td class=\"result_text\"> <a href=\"\\/title\\/(.*?)\\/"
+set matches (match $pattern $contents)
+if (< (count $matches) 2) {
+	throw no results found: $ARGV
+}
+[] $matches 1

@@ -1,0 +1,21 @@
+# Find the intersection of two shows' casts
+
+if not 2 (count $ARGV) {
+	puts Usage: pragmash main.pragmash <show1> <show2>
+	exit 1
+}
+
+set show1 ([] $ARGV 0)
+set show2 ([] $ARGV 1)
+set id1 (pragmash (path $DIR search_id.pragmash) $show1)
+set id2 (pragmash (path $DIR search_id.pragmash) $show2)
+set cast1 (pragmash (path $DIR cast.pragmash) $id1)
+set cast2 (pragmash (path $DIR cast.pragmash) $id2)
+set intersection ""
+for x $cast1 {
+	if (contains $cast2 $x) {
+		set intersection (arr $intersection $x)
+	}
+}
+puts There are (count $intersection) actors in common:
+puts $intersection
